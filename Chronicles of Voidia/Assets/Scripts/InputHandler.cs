@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputsHandler : MonoBehaviour
+public class InputHandler : MonoBehaviour
 {
     public static Vector2 MousePosition { get; private set; }
     public static event Action<Vector2> OnPrimaryClickStarted;

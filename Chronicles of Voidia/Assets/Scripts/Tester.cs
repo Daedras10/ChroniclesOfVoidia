@@ -8,12 +8,12 @@ public class Tester : MonoBehaviour
     
     private void OnEnable()
     {
-        Raycaster.OnRaycastHit += Test;
+        Raycaster.OnRaycastHitPrimary += Test;
     }
     
     private void OnDisable()
     {
-        Raycaster.OnRaycastHit -= Test;
+        Raycaster.OnRaycastHitPrimary -= Test;
     }
 
     private void Test(RaycastHit hit)
