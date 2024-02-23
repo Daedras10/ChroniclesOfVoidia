@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using UnityEditor;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -65,17 +66,23 @@ public class UnitManager : MonoBehaviour
         TryAddUnitsFromSelection(position);
     }
 
+    private RaycastHit corner1;
+    private RaycastHit corner2;
+    
     private void TryAddUnitsFromSelection(Vector2 endPosition)
     {
         var min = new Vector2(Mathf.Min(selectionMouseStart.x, endPosition.x), Mathf.Min(selectionMouseStart.y, endPosition.y));
         var max = new Vector2(Mathf.Max(selectionMouseStart.x, endPosition.x), Mathf.Max(selectionMouseStart.y, endPosition.y));
         
-        var corner1Hit = Raycaster.ShootRay(min, out var corner1, 1 << 8, true);
-        var corner2Hit = Raycaster.ShootRay(max, out var corner2, 1 << 8, true);
+        var corner1Hit = Raycaster.ShootRay(min, out corner1, 1 << 8, true);
+        var corner2Hit = Raycaster.ShootRay(max, out corner2, 1 << 8, true);
         
         if (!corner1Hit || !corner2Hit) return;
         
-        var unitsInBox = Physics.OverlapBox((corner1.point + corner2.point) / 2, new Vector3(Mathf.Abs(corner1.point.x - corner2.point.x), Mathf.Abs(corner1.point.y - corner2.point.y), 1));
+        var unitsInBox = Physics.OverlapBox((corner1.point + corner2.point) / 2, new Vector3(Mathf.Abs(corner1.point.x - corner2.point.x), 0.1f, Mathf.Abs(corner1.point.z - corner2.point.z)));
+        
+        
+        ClearSelection();
         
         foreach (var raycastHit in unitsInBox)
         {
@@ -83,10 +90,13 @@ public class UnitManager : MonoBehaviour
             var unit = raycastHit.transform.GetComponent<Unit.Unit>();
             if (unit == null) continue;
             if (units.Contains(unit)) continue;
+
+            Debug.Log($"{raycastHit.transform.name} added to selection {raycastHit}");
             
             units.Add(unit);
             unit.Select();
         }
+        
 
         Debug.Log($"units selected {units.Count} among {unitsInBox.Length} potential units in the box.");
         
@@ -104,6 +114,7 @@ public class UnitManager : MonoBehaviour
         
         DrawSelectionBox?.Invoke(selectionMouseStart, position, false);
         
+        dragSelection = false;
         return;
         var selectionStart = Camera.main.ScreenToWorldPoint(selectionMouseStart);
         var selectionEnd = Camera.main.ScreenToWorldPoint(position);
@@ -129,5 +140,24 @@ public class UnitManager : MonoBehaviour
         {
             unit.SetDestination(hit.point);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!dragSelection) return;
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube((corner1.point + corner2.point) / 2, new Vector3(Mathf.Abs(corner1.point.x - corner2.point.x), 1,Mathf.Abs(corner1.point.z - corner2.point.z)));
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(corner1.point, 0.5f);
+        Gizmos.DrawWireSphere(corner2.point, 0.5f);
+        /*
+        //Draw a debug box from corner1 to corner2
+        Debug.DrawLine(corner1.point, new Vector3(corner1.point.x, corner2.point.y, corner1.point.z), Color.red, 1f);
+        Debug.DrawLine(corner1.point, new Vector3(corner2.point.x, corner1.point.y, corner1.point.z), Color.red, 1f);
+        Debug.DrawLine(corner2.point, new Vector3(corner1.point.x, corner2.point.y, corner1.point.z), Color.red, 1f);
+        Debug.DrawLine(corner2.point, new Vector3(corner2.point.x, corner1.point.y, corner1.point.z), Color.red, 1f);
+         */
     }
 }
