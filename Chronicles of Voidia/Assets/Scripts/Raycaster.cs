@@ -39,7 +39,7 @@ namespace DefaultNamespace
             
             if (!hasHit) return;
 
-            Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
             
             if (isPrimary) {
                 OnRaycastHitPrimary?.Invoke(hit);
@@ -54,8 +54,10 @@ namespace DefaultNamespace
         {
             if (Cam == null) Cam = Camera.main;
             
+            if (layerMask == default) layerMask = LayerMask.GetMask("Default");
+            
             var ray = Cam.ScreenPointToRay(mousePosition);
-            var raycastHit = Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Default"));
+            var raycastHit = Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask);
             
             if (debug) Debug.DrawRay(ray.origin, ray.direction * 100, raycastHit ? Color.green : Color.red, 1f);
             

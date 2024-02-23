@@ -12,6 +12,8 @@ public class InputHandler : MonoBehaviour
     public static event Action<Vector2> OnSecondaryClickTiggered;
     public static event Action<Vector2> OnSecondaryClickEnded;
     public static event Action<Vector2> OnMouseMoved;
+    public static event Action OnShiftStarted;
+    public static event Action OnShiftEnded;
     
     
     private Inputs inputs;
@@ -33,6 +35,9 @@ public class InputHandler : MonoBehaviour
         inputs.Battle.SecondaryClick.started += SecondaryClickStarted;
         inputs.Battle.SecondaryClick.canceled += SecondaryClickEnded;
         inputs.Battle.MouseMove.performed += MouseMoved;
+
+        inputs.Battle.Shift.started += ShiftStarted;
+        inputs.Battle.Shift.canceled += ShiftEnded;
         
         inputs.Enable();
         
@@ -78,6 +83,16 @@ public class InputHandler : MonoBehaviour
     {
         RefreshMousePosition(ctx);
         OnMouseMoved?.Invoke(MousePosition);
+    }
+    
+    private void ShiftStarted(InputAction.CallbackContext ctx)
+    {
+        OnShiftStarted?.Invoke();
+    }
+    
+    private void ShiftEnded(InputAction.CallbackContext ctx)
+    {
+        OnShiftEnded?.Invoke();
     }
     
 

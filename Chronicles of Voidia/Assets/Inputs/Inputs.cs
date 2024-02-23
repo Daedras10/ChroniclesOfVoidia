@@ -71,6 +71,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""087a67a7-2dd9-4183-8295-6b559263beb5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""MouseZoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76b697b2-4fa2-42b3-851c-79fe8246e437"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -163,6 +183,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Battle_MouseMove = m_Battle.FindAction("MouseMove", throwIfNotFound: true);
         m_Battle_MouseZoom = m_Battle.FindAction("MouseZoom", throwIfNotFound: true);
         m_Battle_MouseWheel = m_Battle.FindAction("MouseWheel", throwIfNotFound: true);
+        m_Battle_Shift = m_Battle.FindAction("Shift", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Battle_MouseMove;
     private readonly InputAction m_Battle_MouseZoom;
     private readonly InputAction m_Battle_MouseWheel;
+    private readonly InputAction m_Battle_Shift;
     public struct BattleActions
     {
         private @Inputs m_Wrapper;
@@ -238,6 +260,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @MouseMove => m_Wrapper.m_Battle_MouseMove;
         public InputAction @MouseZoom => m_Wrapper.m_Battle_MouseZoom;
         public InputAction @MouseWheel => m_Wrapper.m_Battle_MouseWheel;
+        public InputAction @Shift => m_Wrapper.m_Battle_Shift;
         public InputActionMap Get() { return m_Wrapper.m_Battle; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -262,6 +285,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @MouseWheel.started += instance.OnMouseWheel;
             @MouseWheel.performed += instance.OnMouseWheel;
             @MouseWheel.canceled += instance.OnMouseWheel;
+            @Shift.started += instance.OnShift;
+            @Shift.performed += instance.OnShift;
+            @Shift.canceled += instance.OnShift;
         }
 
         private void UnregisterCallbacks(IBattleActions instance)
@@ -281,6 +307,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @MouseWheel.started -= instance.OnMouseWheel;
             @MouseWheel.performed -= instance.OnMouseWheel;
             @MouseWheel.canceled -= instance.OnMouseWheel;
+            @Shift.started -= instance.OnShift;
+            @Shift.performed -= instance.OnShift;
+            @Shift.canceled -= instance.OnShift;
         }
 
         public void RemoveCallbacks(IBattleActions instance)
@@ -305,5 +334,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnMouseMove(InputAction.CallbackContext context);
         void OnMouseZoom(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);
+        void OnShift(InputAction.CallbackContext context);
     }
 }
