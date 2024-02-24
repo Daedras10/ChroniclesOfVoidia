@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace DefaultNamespace.Interfaces
+﻿namespace Interfaces
 {
     public interface ISelectable
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace DefaultNamespace.Manager
+namespace Manager
 {
     public class UIManager : MonoBehaviour
     {

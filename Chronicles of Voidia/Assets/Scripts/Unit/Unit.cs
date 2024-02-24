@@ -1,5 +1,4 @@
-﻿using System;
-using DefaultNamespace.Interfaces;
+﻿using Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
 
