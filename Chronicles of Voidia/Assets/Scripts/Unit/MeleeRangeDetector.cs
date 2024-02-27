@@ -11,6 +11,7 @@ namespace Unit
         private void OnTriggerEnter(Collider other)
         {
             OnMeleeRangeEnter?.Invoke(other);
+            Debug.Log("Melee range enter");
         }
         
         private void OnTriggerExit(Collider other)

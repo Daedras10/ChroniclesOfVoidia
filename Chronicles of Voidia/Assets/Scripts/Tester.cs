@@ -16,6 +16,6 @@ public class Tester : MonoBehaviour
 
     private void Test(RaycastHit hit)
     {
-        unit.SetDestination(hit.point);
+        //unit.SetDestination(hit.point);
     }
 }

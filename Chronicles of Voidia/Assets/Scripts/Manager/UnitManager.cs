@@ -115,10 +115,10 @@ namespace Manager
             
                 units.Add(unit);
                 unit.Select();
-                Log($"Unit {raycastHit.transform.name} added to selection.");
+                //Log($"Unit {raycastHit.transform.name} added to selection.");
             }
         
-            Log($"units selected {units.Count} among {unitsInBox.Length} potential units in the box.");
+            //Log($"units selected {units.Count} among {unitsInBox.Length} potential units in the box.");
         }
     
         private void SelectionEnd(Vector2 position)
@@ -167,9 +167,18 @@ namespace Manager
             CleanSelection();
 
             var unitsCount = units.Count;
+            
+            var entityHit = hit.transform.GetComponent<Unit.Unit>();
+            var entityWasHit = entityHit != null;
         
             for (int i = 0; i < unitsCount; i++)
             {
+                if (entityWasHit)
+                {
+                    units[i].SetTarget(new Target(entityHit));
+                    continue;
+                }
+                
                 SetPositionInSquare(hit.point, i);
             }
 
@@ -185,8 +194,8 @@ namespace Manager
             var z = index / maxLine;
         
             var destination = originalDestination + new Vector3(x * spaceBetweenUnit, 0, z * spaceBetweenUnit);
-        
-            units[index].SetDestination(destination);
+            var target = new Target(destination);
+            units[index].SetTarget(target);
         }
     
         private void CleanSelection()
@@ -214,6 +223,25 @@ namespace Manager
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(corner1.point, 0.5f);
             Gizmos.DrawWireSphere(corner2.point, 0.5f);
+        }
+    }
+    
+    public class Target
+    {
+        private Vector3 point;
+        private Unit.Unit entity;
+        
+        public bool IsPoint => entity == null;
+        public Vector3 Position => IsPoint ? point : entity.transform.position;
+        
+        public Target(Vector3 point)
+        {
+            this.point = point;
+        }
+        
+        public Target(Unit.Unit entity)
+        {
+            this.entity = entity;
         }
     }
 }
