@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using Manager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,18 +20,15 @@ namespace Unit
 
         private Target target;
         
+        public static event Action<Unit,Unit> OnUnitEnterMeleeRange;
+        public static event Action<Unit,Unit> OnUnitExitMeleeRange;
+        
         private void Start()
         {
             Deselect();
-            
-            meleeRangeDetector.OnMeleeRangeEnter += (collider) =>
-            {
-                Debug.Log($"{gameObject.name} : Melee range enter {collider.name}");
-            };
-            meleeRangeDetector.OnMeleeRangeExit += (collider) =>
-            {
-                Debug.Log($"{gameObject.name} : Melee range exit {collider.name}");
-            };
+
+            meleeRangeDetector.OnMeleeRangeEnter += MeleeRangeEnter;
+            meleeRangeDetector.OnMeleeRangeExit += MeleeRangeExit;
         }
         
         private void Update()
@@ -42,6 +40,26 @@ namespace Unit
             if (target.IsPoint) return;
             
             SetDestination(target.Position);
+        }
+        
+        private void MeleeRangeEnter(Collider collider)
+        {
+            Debug.Log($"{gameObject.name} : Melee range enter {collider.name}");
+            
+            if (collider.TryGetComponent(out Unit unit))
+            {
+                OnUnitEnterMeleeRange?.Invoke(this, unit);
+            }
+        }
+        
+        private void MeleeRangeExit(Collider collider)
+        {
+            Debug.Log($"{gameObject.name} : Melee range exit {collider.name}");
+            
+            if (collider.TryGetComponent(out Unit unit))
+            {
+                OnUnitExitMeleeRange?.Invoke(this, unit);
+            }
         }
 
         
