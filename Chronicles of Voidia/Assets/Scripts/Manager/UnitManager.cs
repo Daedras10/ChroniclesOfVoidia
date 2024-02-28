@@ -228,20 +228,20 @@ namespace Manager
     
     public class Target
     {
-        private Vector3 point;
-        private Unit.Unit entity;
+        public Vector3 Point { get; }
+        public Unit.Unit Entity { get; }
         
-        public bool IsPoint => entity == null;
-        public Vector3 Position => IsPoint ? point : entity.transform.position;
+        public bool IsPoint => Entity == null;
+        public Vector3 Position => IsPoint ? Point : Entity.transform.position;
         
         public Target(Vector3 point)
         {
-            this.point = point;
+            Point = point;
         }
         
         public Target(Unit.Unit entity)
         {
-            this.entity = entity;
+            Entity = entity;
         }
     }
 }
