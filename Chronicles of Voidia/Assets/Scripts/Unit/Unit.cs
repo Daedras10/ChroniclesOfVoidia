@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using BattleMap;
 using Interfaces;
 using Manager;
 using UnityEngine;
@@ -27,12 +29,16 @@ namespace Unit
         [SerializeField] private float blinkWaitTime = 0.5f;
         [SerializeField] private float followDistance = 1f;
         [SerializeField] private float attackCD = 1f;
+        [Space]
+        [SerializeField] private float baseSpeed = 5f;
 
         [SerializeField] private bool debugAsFriend = false;
 
         private Target target;
-        private List<Unit> unitsInRange = new ();
         private Color originalColor;
+        private List<Unit> unitsInRange = new ();
+        private List<MovementCost> movementCosts = new ();
+        
         
         private event Action TryAttack;
         
@@ -45,9 +51,10 @@ namespace Unit
 
             meleeRangeDetector.OnMeleeRangeEnter += MeleeRangeEnter;
             meleeRangeDetector.OnMeleeRangeExit += MeleeRangeExit;
+            TryAttack += Attack;
             
             originalColor = rendererRef.material.color;
-            StartCoroutine(AttackCooldown());
+            UpdateSpeed();
         }
 
         private IEnumerator AttackCooldown()
@@ -182,6 +189,40 @@ namespace Unit
         public void Deselect()
         {
             selectionIndicator.SetActive(false);
+        }
+
+        [ContextMenu("UpdateSpeed")]
+        private void UpdateSpeed()
+        {
+            var speed = baseSpeed;
+            
+            if (movementCosts.Count > 0)
+            {
+                var maxCost = movementCosts.Max(mc => mc.Cost);
+                speed = baseSpeed / maxCost;
+            }
+            
+            agent.speed = speed;
+        }
+        
+        public void AddDifficultTerrain(DifficultTerrain terrain, float cost)
+        {
+            if (movementCosts.Exists(mc => mc.Terrain == terrain)) return;
+            
+            var movementCost = new MovementCost(terrain, cost);
+            movementCosts.Add(movementCost);
+            
+            UpdateSpeed();
+        }
+        
+        public void RemoveDifficultTerrain(DifficultTerrain terrain)
+        {
+            var movementCost = movementCosts.Find(mc => mc.Terrain == terrain);
+            if (movementCost == null) return;
+            
+            movementCosts.Remove(movementCost);
+            
+            UpdateSpeed();
         }
     }
 }
