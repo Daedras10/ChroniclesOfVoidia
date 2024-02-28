@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Unit
+namespace BattleEntity
 {
     public class MeleeRangeDetector : MonoBehaviour
     {

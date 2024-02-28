@@ -1,8 +1,9 @@
+using BattleEntity;
 using UnityEngine;
 
 public class Tester : MonoBehaviour
 {
-    [SerializeField] private Unit.Unit unit;
+    [SerializeField] private Unit unit;
     
     private void OnEnable()
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BattleEntity;
 using UnityEngine;
 
 namespace Manager
@@ -17,7 +18,7 @@ namespace Manager
         [SerializeField] private bool rayDebug;
     
     
-        private List<Unit.Unit> units = new ();
+        private List<Unit> units = new ();
         private Vector2 selectionMouseStart;
         private bool dragSelection;
         private bool shiftIsPressed;
@@ -30,7 +31,7 @@ namespace Manager
         // Start is called before the first frame update
         void Start()
         {
-            units = new List<Unit.Unit>();
+            units = new List<Unit>();
         }
     
         private void OnEnable()
@@ -109,7 +110,7 @@ namespace Manager
         
             foreach (var raycastHit in unitsInBox)
             {
-                var unit = raycastHit.transform.GetComponent<Unit.Unit>();
+                var unit = raycastHit.transform.GetComponent<Unit>();
                 if (unit == null) continue;
                 if (units.Contains(unit)) continue;
             
@@ -130,7 +131,7 @@ namespace Manager
             {
                 var raycastHit = Raycaster.ShootRay(position, out var hit, selectableLayer, rayDebug);
                 if (!raycastHit) return;
-                var unit = hit.transform.GetComponent<Unit.Unit>(); //should be ISelctable
+                var unit = hit.transform.GetComponent<Unit>(); //should be ISelctable
                 if (unit == null) return;
             
                 var alreadySelected = units.Contains(unit);
@@ -168,7 +169,7 @@ namespace Manager
 
             var unitsCount = units.Count;
             
-            var entityHit = hit.transform.GetComponent<Unit.Unit>();
+            var entityHit = hit.transform.GetComponent<Unit>();
             var entityWasHit = entityHit != null;
         
             for (int i = 0; i < unitsCount; i++)
@@ -229,7 +230,7 @@ namespace Manager
     public class Target
     {
         public Vector3 Point { get; }
-        public Unit.Unit Entity { get; }
+        public Unit Entity { get; }
         
         public bool IsPoint => Entity == null;
         public Vector3 Position => IsPoint ? Point : Entity.transform.position;
@@ -239,7 +240,7 @@ namespace Manager
             Point = point;
         }
         
-        public Target(Unit.Unit entity)
+        public Target(Unit entity)
         {
             Entity = entity;
         }

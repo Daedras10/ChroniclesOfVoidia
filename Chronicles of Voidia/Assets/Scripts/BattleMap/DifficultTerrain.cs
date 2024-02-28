@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using BattleEntity;
+using UnityEngine;
 
 namespace BattleMap
 {
@@ -19,7 +20,7 @@ namespace BattleMap
         
         private void OnTriggerEnter(Collider other)
         {
-            var unit = other.gameObject.GetComponent<Unit.Unit>();
+            var unit = other.gameObject.GetComponent<Unit>();
             if ( unit == null) return;
             
             unit.AddDifficultTerrain(this, movementCost);
@@ -27,7 +28,7 @@ namespace BattleMap
         
         private void OnTriggerExit(Collider other)
         {
-            var unit = other.gameObject.GetComponent<Unit.Unit>();
+            var unit = other.gameObject.GetComponent<Unit>();
             if ( unit == null) return;
             
             unit.RemoveDifficultTerrain(this);

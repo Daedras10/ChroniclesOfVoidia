@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleEntity;
 using DefaultNamespace;
 using UnityEngine;
 
@@ -13,17 +14,17 @@ namespace Manager
         
         private void OnEnable()
         {
-            Unit.Unit.OnUnitEnterMeleeRange += AddDebugLineRenderer;
-            Unit.Unit.OnUnitExitMeleeRange += RemoveFromDebugLineRenderer;
+            Unit.OnUnitEnterMeleeRange += AddDebugLineRenderer;
+            Unit.OnUnitExitMeleeRange += RemoveFromDebugLineRenderer;
         }
         
         private void OnDisable()
         {
-            Unit.Unit.OnUnitEnterMeleeRange -= AddDebugLineRenderer;
-            Unit.Unit.OnUnitExitMeleeRange -= RemoveFromDebugLineRenderer;
+            Unit.OnUnitEnterMeleeRange -= AddDebugLineRenderer;
+            Unit.OnUnitExitMeleeRange -= RemoveFromDebugLineRenderer;
         }
         
-        private void AddDebugLineRenderer(Unit.Unit entity1, Unit.Unit entity2)
+        private void AddDebugLineRenderer(Unit entity1, Unit entity2)
         {
             var alreadyPresent = lineCombos.Where(lc =>
                     (lc.Entity1 == entity1 && lc.Entity2 == entity2) ||
@@ -41,7 +42,7 @@ namespace Manager
             lineCombos.Add(lineCombo);
         }
         
-        private void RemoveFromDebugLineRenderer(Unit.Unit entity1, Unit.Unit entity2)
+        private void RemoveFromDebugLineRenderer(Unit entity1, Unit entity2)
         {
             var lineCombo = lineCombos.FirstOrDefault(lc =>
                 (lc.Entity1 == entity1 && lc.Entity2 == entity2) ||
@@ -56,11 +57,11 @@ namespace Manager
     
     public class AimCombo
     {
-        public Unit.Unit Entity1;
-        public Unit.Unit Entity2;
+        public Unit Entity1;
+        public Unit Entity2;
         public DebugLineRenderer DebugLineRenderer;
 
-        public AimCombo(Unit.Unit entity1, Unit.Unit entity2, DebugLineRenderer debugLineRenderer)
+        public AimCombo(Unit entity1, Unit entity2, DebugLineRenderer debugLineRenderer)
         {
             Entity1 = entity1;
             Entity2 = entity2;

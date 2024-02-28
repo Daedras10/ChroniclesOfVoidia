@@ -7,9 +7,8 @@ using Interfaces;
 using Manager;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
-namespace Unit
+namespace BattleEntity
 {
     public class Unit : MonoBehaviour, ISelectable
     {
