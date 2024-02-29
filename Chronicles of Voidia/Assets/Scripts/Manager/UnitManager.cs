@@ -18,7 +18,7 @@ namespace Manager
         [SerializeField] private bool rayDebug;
     
     
-        private List<Unit> units = new ();
+        private List<UnitVisual> units = new ();
         private Vector2 selectionMouseStart;
         private bool dragSelection;
         private bool shiftIsPressed;
@@ -31,7 +31,7 @@ namespace Manager
         // Start is called before the first frame update
         void Start()
         {
-            units = new List<Unit>();
+            units = new List<UnitVisual>();
         }
     
         private void OnEnable()
@@ -110,7 +110,7 @@ namespace Manager
         
             foreach (var raycastHit in unitsInBox)
             {
-                var unit = raycastHit.transform.GetComponent<Unit>();
+                var unit = raycastHit.transform.GetComponent<UnitVisual>();
                 if (unit == null) continue;
                 if (units.Contains(unit)) continue;
             
@@ -131,7 +131,7 @@ namespace Manager
             {
                 var raycastHit = Raycaster.ShootRay(position, out var hit, selectableLayer, rayDebug);
                 if (!raycastHit) return;
-                var unit = hit.transform.GetComponent<Unit>(); //should be ISelctable
+                var unit = hit.transform.GetComponent<UnitVisual>(); //should be ISelctable
                 if (unit == null) return;
             
                 var alreadySelected = units.Contains(unit);
@@ -169,7 +169,7 @@ namespace Manager
 
             var unitsCount = units.Count;
             
-            var entityHit = hit.transform.GetComponent<Unit>();
+            var entityHit = hit.transform.GetComponent<UnitVisual>();
             var entityWasHit = entityHit != null;
         
             for (int i = 0; i < unitsCount; i++)
@@ -224,25 +224,6 @@ namespace Manager
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(corner1.point, 0.5f);
             Gizmos.DrawWireSphere(corner2.point, 0.5f);
-        }
-    }
-    
-    public class Target
-    {
-        public Vector3 Point { get; }
-        public Unit Entity { get; }
-        
-        public bool IsPoint => Entity == null;
-        public Vector3 Position => IsPoint ? Point : Entity.transform.position;
-        
-        public Target(Vector3 point)
-        {
-            Point = point;
-        }
-        
-        public Target(Unit entity)
-        {
-            Entity = entity;
         }
     }
 }

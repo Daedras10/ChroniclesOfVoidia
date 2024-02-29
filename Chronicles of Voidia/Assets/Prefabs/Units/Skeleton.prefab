@@ -49,14 +49,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3104960b0be94acf9e5744f8c302cb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 8950036658210763843}
-  animator: {fileID: 4394249641494692053}
+  rb: {fileID: 7180190997943518114}
   selectionIndicator: {fileID: 7682534883176125971}
+  agent: {fileID: 8950036658210763843}
+  baseSpeed: 5
+  followDistance: 1.8
+  animator: {fileID: 4394249641494692053}
   rendererRef: {fileID: 4345810581287604715}
   meleeRangeDetector: {fileID: 3868714877095072263}
-  multiplier: 10
+  animationSpeedMult: 10
   blinkWaitTime: 0.5
-  followDistance: 1.8
   attackCD: 1
   debugAsFriend: 0
 --- !u!195 &8950036658210763843

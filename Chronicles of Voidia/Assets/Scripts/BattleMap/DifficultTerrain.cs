@@ -20,18 +20,18 @@ namespace BattleMap
         
         private void OnTriggerEnter(Collider other)
         {
-            var unit = other.gameObject.GetComponent<Unit>();
-            if ( unit == null) return;
+            var movingBattleEntity = other.gameObject.GetComponent<MovingBattleEntity>();
+            if ( movingBattleEntity == null) return;
             
-            unit.AddDifficultTerrain(this, movementCost);
+            movingBattleEntity.AddDifficultTerrain(this, movementCost);
         }
         
         private void OnTriggerExit(Collider other)
         {
-            var unit = other.gameObject.GetComponent<Unit>();
-            if ( unit == null) return;
+            var movingBattleEntity = other.gameObject.GetComponent<MovingBattleEntity>();
+            if ( movingBattleEntity == null) return;
             
-            unit.RemoveDifficultTerrain(this);
+            movingBattleEntity.RemoveDifficultTerrain(this);
         }
     }
     

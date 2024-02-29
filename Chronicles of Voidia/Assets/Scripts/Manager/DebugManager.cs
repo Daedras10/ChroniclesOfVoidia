@@ -14,17 +14,17 @@ namespace Manager
         
         private void OnEnable()
         {
-            Unit.OnUnitEnterMeleeRange += AddDebugLineRenderer;
-            Unit.OnUnitExitMeleeRange += RemoveFromDebugLineRenderer;
+            UnitVisual.OnUnitEnterMeleeRange += AddDebugLineRenderer;
+            UnitVisual.OnUnitExitMeleeRange += RemoveFromDebugLineRenderer;
         }
         
         private void OnDisable()
         {
-            Unit.OnUnitEnterMeleeRange -= AddDebugLineRenderer;
-            Unit.OnUnitExitMeleeRange -= RemoveFromDebugLineRenderer;
+            UnitVisual.OnUnitEnterMeleeRange -= AddDebugLineRenderer;
+            UnitVisual.OnUnitExitMeleeRange -= RemoveFromDebugLineRenderer;
         }
         
-        private void AddDebugLineRenderer(Unit entity1, Unit entity2)
+        private void AddDebugLineRenderer(UnitVisual entity1, UnitVisual entity2)
         {
             var alreadyPresent = lineCombos.Where(lc =>
                     (lc.Entity1 == entity1 && lc.Entity2 == entity2) ||
@@ -42,7 +42,7 @@ namespace Manager
             lineCombos.Add(lineCombo);
         }
         
-        private void RemoveFromDebugLineRenderer(Unit entity1, Unit entity2)
+        private void RemoveFromDebugLineRenderer(UnitVisual entity1, UnitVisual entity2)
         {
             var lineCombo = lineCombos.FirstOrDefault(lc =>
                 (lc.Entity1 == entity1 && lc.Entity2 == entity2) ||
@@ -57,11 +57,11 @@ namespace Manager
     
     public class AimCombo
     {
-        public Unit Entity1;
-        public Unit Entity2;
+        public UnitVisual Entity1;
+        public UnitVisual Entity2;
         public DebugLineRenderer DebugLineRenderer;
 
-        public AimCombo(Unit entity1, Unit entity2, DebugLineRenderer debugLineRenderer)
+        public AimCombo(UnitVisual entity1, UnitVisual entity2, DebugLineRenderer debugLineRenderer)
         {
             Entity1 = entity1;
             Entity2 = entity2;
