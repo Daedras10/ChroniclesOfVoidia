@@ -69,6 +69,11 @@ namespace BattleEntity
             BattleEntityDestroyed?.Invoke(this);
             Destroy(gameObject);
         }
+        
+        public static bool IsEnemy(Teams team1, Teams team2)
+        {
+            return team1 != team2 && team1 != Teams.Neutral && team2 != Teams.Neutral;
+        }
     }
     
     public class Target

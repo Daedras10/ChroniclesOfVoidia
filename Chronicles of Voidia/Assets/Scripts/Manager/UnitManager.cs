@@ -12,8 +12,10 @@ namespace Manager
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private LayerMask selectableLayer;
         [SerializeField] private float spaceBetweenUnit = 1f;
-    
-        [Header("Debug")]
+
+        [Header("Debug")] 
+        [SerializeField] private Teams team;
+        [SerializeField] private bool canChangeTeam;
         [SerializeField] private bool debug;
         [SerializeField] private bool rayDebug;
     
@@ -42,6 +44,8 @@ namespace Manager
         
             InputHandler.OnShiftStarted += ShiftStart;
             InputHandler.OnShiftEnded += ShiftEnd;
+            
+            InputHandler.OnTabPerformed += ChangeTeam;
         }
     
         private void OnDisable()
@@ -55,6 +59,8 @@ namespace Manager
         
             InputHandler.OnMouseMoved -= CheckForDrag;
             InputHandler.OnMouseMoved -= UpdateDrag;
+            
+            InputHandler.OnTabPerformed -= ChangeTeam;
         }
     
         private void ShiftStart()
@@ -65,6 +71,18 @@ namespace Manager
         private void ShiftEnd()
         {
             shiftIsPressed = false;
+        }
+
+        private void ChangeTeam()
+        {
+            if (!canChangeTeam) return;
+            team = team switch
+            {
+                Teams.Player => Teams.Enemy,
+                Teams.Enemy => Teams.Player,
+                _ => Teams.Player
+            };
+            ClearSelection();
         }
     
 
@@ -112,7 +130,7 @@ namespace Manager
             {
                 var unit = raycastHit.transform.GetComponent<UnitVisual>();
                 if (unit == null) continue;
-                if (units.Contains(unit)) continue;
+                if (units.Contains(unit) || unit.Team != team) continue;
             
                 units.Add(unit);
                 unit.Select();

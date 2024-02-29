@@ -1536,6 +1536,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   spaceBetweenUnit: 1
+  team: 0
+  canChangeTeam: 1
   debug: 1
   rayDebug: 0
 --- !u!1 &1671816865

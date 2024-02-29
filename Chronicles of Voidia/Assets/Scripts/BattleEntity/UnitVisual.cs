@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 namespace BattleEntity
@@ -12,7 +13,6 @@ namespace BattleEntity
         [SerializeField] private MeleeRangeDetector meleeRangeDetector;
         
         [Header("Settings")]
-        [SerializeField] private bool debugAsFriend = false;
         [SerializeField] protected float attackDistance = 1.2f;
         [field:SerializeField] public Unit Unit { get; private set; }
 
@@ -102,7 +102,7 @@ namespace BattleEntity
             if (target == null) return;
             if (target.IsPoint) return;
                 
-            var targetIsAlly = debugAsFriend; //Todo : check if target is ally
+            var targetIsAlly = !IsEnemy(Team, target.Entity.Team);
             
             if (targetIsAlly)
             {
