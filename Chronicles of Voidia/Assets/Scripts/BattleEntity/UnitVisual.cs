@@ -102,7 +102,8 @@ namespace BattleEntity
             if (target == null) return;
             if (target.IsPoint) return;
                 
-            var targetIsAlly = !IsEnemy(Team, target.Entity.Team);
+            var targetIsAlly = IsAlly(Team, target.Entity.Team);
+            var targetIsEnemy = IsEnemy(Team, target.Entity.Team);
             
             if (targetIsAlly)
             {
@@ -111,7 +112,7 @@ namespace BattleEntity
                 return;
             }
 
-            if (unitsInRange.Contains(target.Entity))
+            if (targetIsEnemy && unitsInRange.Contains(target.Entity))
             {
                 agent.stoppingDistance = attackDistance;
                 SetDestination(target.Position);

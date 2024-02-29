@@ -72,7 +72,12 @@ namespace BattleEntity
         
         public static bool IsEnemy(Teams team1, Teams team2)
         {
-            return team1 != team2 && team1 != Teams.Neutral && team2 != Teams.Neutral;
+            return team1 != team2 && team1 != Teams.Neutral && team2 != Teams.Neutral && !IsAlly(team1, team2);
+        }
+        
+        public static bool IsAlly(Teams team1, Teams team2)
+        {
+            return team1 == team2 || (team1 == Teams.Player && team2 == Teams.Ally) || (team1 == Teams.Ally && team2 == Teams.Player);
         }
     }
     
