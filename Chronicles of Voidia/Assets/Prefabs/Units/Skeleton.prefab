@@ -57,6 +57,7 @@ MonoBehaviour:
   followDistance: 1.8
   meleeRangeDetector: {fileID: 3868714877095072263}
   debugAsFriend: 0
+  attackDistance: 1.65
   <Unit>k__BackingField:
     attackCD: 1
 --- !u!114 &1731929145304686306

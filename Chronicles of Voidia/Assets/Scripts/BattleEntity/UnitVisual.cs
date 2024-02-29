@@ -13,6 +13,7 @@ namespace BattleEntity
         
         [Header("Settings")]
         [SerializeField] private bool debugAsFriend = false;
+        [SerializeField] protected float attackDistance = 1.2f;
         [field:SerializeField] public Unit Unit { get; private set; }
 
         
@@ -79,7 +80,8 @@ namespace BattleEntity
 
             if (unitsInRange.Contains(target.Entity))
             {
-                SetDestination(transform.position);
+                agent.stoppingDistance = attackDistance;
+                SetDestination(target.Position);
                 TryAttack?.Invoke();
                 return;
             }
