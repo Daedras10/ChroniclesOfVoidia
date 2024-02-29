@@ -862,17 +862,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3104960b0be94acf9e5744f8c302cb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 441651923}
-  animator: {fileID: 0}
+  rb: {fileID: 0}
   selectionIndicator: {fileID: 0}
-  rendererRef: {fileID: 0}
-  meleeRangeDetector: {fileID: 0}
-  multiplier: 10
-  blinkWaitTime: 0.5
-  followDistance: 1
-  attackCD: 1
+  selectionRenderer: {fileID: 0}
+  <Team>k__BackingField: 2
+  agent: {fileID: 441651923}
   baseSpeed: 5
+  followDistance: 1
+  isMoving: 0
+  meleeRangeDetector: {fileID: 0}
   debugAsFriend: 0
+  attackDistance: 1.2
+  <Unit>k__BackingField:
+    attackCD: 1
 --- !u!1 &658893914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,7 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8905cb1430847743af21549fcae865a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 0}
+  _unitVisual: {fileID: 0}
 --- !u!1 &1348857176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,6 +1668,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2123314414111712344, guid: c4563f3ac8b2a86498b2fa31beb9bb26,
+        type: 3}
+      propertyPath: <Team>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4442256415626681667, guid: c4563f3ac8b2a86498b2fa31beb9bb26,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1763,6 +1770,11 @@ PrefabInstance:
     - target: {fileID: 2012036301994000851, guid: c4563f3ac8b2a86498b2fa31beb9bb26,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2123314414111712344, guid: c4563f3ac8b2a86498b2fa31beb9bb26,
+        type: 3}
+      propertyPath: <Team>k__BackingField
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -1,7 +1,6 @@
 ﻿using System;
 using Interfaces;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace BattleEntity
 {
@@ -10,10 +9,15 @@ namespace BattleEntity
         [Header("Components")]
         [SerializeField] private Rigidbody rb;
         [SerializeField] private GameObject selectionIndicator;
-        
-        //[Header("Settings")]
+        [SerializeField] private Renderer selectionRenderer;
+
+        [field: Header("Settings")]
+        [field: SerializeField] public Teams Team { get; private set; } = Teams.Neutral;
         public static event Action<BattleEntity> OnBattleEntitySelected;
         public static event Action<BattleEntity> OnBattleEntityDeselected;
+        public static event Action<BattleEntity> OnBattleEntityDestroyed;
+        
+        public event Action<BattleEntity> BattleEntityDestroyed; 
 
         private void Start()
         {
@@ -36,6 +40,7 @@ namespace BattleEntity
 
         public void Select()
         {
+            UpdateTeamColor();
             if (selectionIndicator != null) selectionIndicator.SetActive(true);
             OnBattleEntitySelected?.Invoke(this);
         }
@@ -44,6 +49,25 @@ namespace BattleEntity
         {
             if (selectionIndicator != null) selectionIndicator.SetActive(false);
             OnBattleEntityDeselected?.Invoke(this);
+        }
+
+        protected virtual void UpdateTeamColor()
+        {
+            selectionRenderer.material.color = Team switch
+            {
+                Teams.Player => Color.black,
+                Teams.Enemy => Color.red,
+                Teams.Neutral => Color.white,
+                Teams.Ally => Color.green,
+                _ => Color.white
+            };
+        }
+
+        public void Destroy()
+        {
+            OnBattleEntityDestroyed?.Invoke(this);
+            BattleEntityDestroyed?.Invoke(this);
+            Destroy(gameObject);
         }
     }
     
@@ -64,5 +88,13 @@ namespace BattleEntity
         {
             Entity = entity;
         }
+    }
+    
+    public enum Teams
+    {
+        Player = 0,
+        Enemy,
+        Neutral,
+        Ally,
     }
 }

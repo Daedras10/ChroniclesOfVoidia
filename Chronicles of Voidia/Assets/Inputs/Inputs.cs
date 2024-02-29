@@ -80,6 +80,33 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""ccacf548-1c0e-4c22-8001-5ddec1347f3b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""A"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e0f3f82-771d-4930-a3d6-1919877d525f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LAlt"",
+                    ""type"": ""Button"",
+                    ""id"": ""4eaae612-dafd-4a90-bdae-0330011cef5f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -170,6 +197,39 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""Shift"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a91aabb-b83a-4272-8678-b958ae4455d5"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""004c2764-7886-4e3a-a69b-5389701c61ab"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""A"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8e92bd4-8d29-4135-9db2-961c5aef957e"",
+                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LAlt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -184,6 +244,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Battle_MouseZoom = m_Battle.FindAction("MouseZoom", throwIfNotFound: true);
         m_Battle_MouseWheel = m_Battle.FindAction("MouseWheel", throwIfNotFound: true);
         m_Battle_Shift = m_Battle.FindAction("Shift", throwIfNotFound: true);
+        m_Battle_Tab = m_Battle.FindAction("Tab", throwIfNotFound: true);
+        m_Battle_A = m_Battle.FindAction("A", throwIfNotFound: true);
+        m_Battle_LAlt = m_Battle.FindAction("LAlt", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +314,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Battle_MouseZoom;
     private readonly InputAction m_Battle_MouseWheel;
     private readonly InputAction m_Battle_Shift;
+    private readonly InputAction m_Battle_Tab;
+    private readonly InputAction m_Battle_A;
+    private readonly InputAction m_Battle_LAlt;
     public struct BattleActions
     {
         private @Inputs m_Wrapper;
@@ -261,6 +327,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @MouseZoom => m_Wrapper.m_Battle_MouseZoom;
         public InputAction @MouseWheel => m_Wrapper.m_Battle_MouseWheel;
         public InputAction @Shift => m_Wrapper.m_Battle_Shift;
+        public InputAction @Tab => m_Wrapper.m_Battle_Tab;
+        public InputAction @A => m_Wrapper.m_Battle_A;
+        public InputAction @LAlt => m_Wrapper.m_Battle_LAlt;
         public InputActionMap Get() { return m_Wrapper.m_Battle; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +357,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Shift.started += instance.OnShift;
             @Shift.performed += instance.OnShift;
             @Shift.canceled += instance.OnShift;
+            @Tab.started += instance.OnTab;
+            @Tab.performed += instance.OnTab;
+            @Tab.canceled += instance.OnTab;
+            @A.started += instance.OnA;
+            @A.performed += instance.OnA;
+            @A.canceled += instance.OnA;
+            @LAlt.started += instance.OnLAlt;
+            @LAlt.performed += instance.OnLAlt;
+            @LAlt.canceled += instance.OnLAlt;
         }
 
         private void UnregisterCallbacks(IBattleActions instance)
@@ -310,6 +388,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Shift.started -= instance.OnShift;
             @Shift.performed -= instance.OnShift;
             @Shift.canceled -= instance.OnShift;
+            @Tab.started -= instance.OnTab;
+            @Tab.performed -= instance.OnTab;
+            @Tab.canceled -= instance.OnTab;
+            @A.started -= instance.OnA;
+            @A.performed -= instance.OnA;
+            @A.canceled -= instance.OnA;
+            @LAlt.started -= instance.OnLAlt;
+            @LAlt.performed -= instance.OnLAlt;
+            @LAlt.canceled -= instance.OnLAlt;
         }
 
         public void RemoveCallbacks(IBattleActions instance)
@@ -335,5 +422,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnMouseZoom(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);
         void OnShift(InputAction.CallbackContext context);
+        void OnTab(InputAction.CallbackContext context);
+        void OnA(InputAction.CallbackContext context);
+        void OnLAlt(InputAction.CallbackContext context);
     }
 }

@@ -14,6 +14,13 @@ public class InputHandler : MonoBehaviour
     public static event Action<Vector2> OnMouseMoved;
     public static event Action OnShiftStarted;
     public static event Action OnShiftEnded;
+    public static event Action OnLAltStarted;
+    public static event Action OnLAltEnded;
+    public static event Action OnAStarted;
+    public static event Action OnTabStarted;
+    public static event Action OnTabEnded;
+    public static event Action OnTabPerformed;
+    
     
     
     private Inputs inputs;
@@ -38,6 +45,16 @@ public class InputHandler : MonoBehaviour
 
         inputs.Battle.Shift.started += ShiftStarted;
         inputs.Battle.Shift.canceled += ShiftEnded;
+        
+        inputs.Battle.LAlt.started += LAltStarted;
+        inputs.Battle.LAlt.canceled += LAltEnded;
+        
+        inputs.Battle.A.started += AStarted;
+        inputs.Battle.A.canceled += AEnded;
+        
+        inputs.Battle.Tab.started += TabStarted;
+        inputs.Battle.Tab.canceled += TabEnded;
+        inputs.Battle.Tab.performed += TabPerformed;
         
         inputs.Enable();
         
@@ -93,6 +110,41 @@ public class InputHandler : MonoBehaviour
     private void ShiftEnded(InputAction.CallbackContext ctx)
     {
         OnShiftEnded?.Invoke();
+    }
+    
+    private void LAltStarted(InputAction.CallbackContext ctx)
+    {
+        OnLAltStarted?.Invoke();
+    }
+    
+    private void LAltEnded(InputAction.CallbackContext ctx)
+    {
+        OnLAltEnded?.Invoke();
+    }
+    
+    private void AStarted(InputAction.CallbackContext ctx)
+    {
+        OnAStarted?.Invoke();
+    }
+    
+    private void AEnded(InputAction.CallbackContext ctx)
+    {
+        OnAStarted?.Invoke();
+    }
+    
+    private void TabStarted(InputAction.CallbackContext ctx)
+    {
+        OnTabStarted?.Invoke();
+    }
+    
+    private void TabEnded(InputAction.CallbackContext ctx)
+    {
+        OnTabEnded?.Invoke();
+    }
+    
+    private void TabPerformed(InputAction.CallbackContext ctx)
+    {
+        OnTabPerformed?.Invoke();
     }
     
 
