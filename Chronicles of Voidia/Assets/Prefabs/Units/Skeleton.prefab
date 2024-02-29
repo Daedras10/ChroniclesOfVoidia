@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2012036301994000851}
   - component: {fileID: 2123314414111712344}
+  - component: {fileID: 1731929145304686306}
   - component: {fileID: 8950036658210763843}
   - component: {fileID: 8831293015332036504}
   - component: {fileID: 7180190997943518114}
@@ -54,13 +55,28 @@ MonoBehaviour:
   agent: {fileID: 8950036658210763843}
   baseSpeed: 5
   followDistance: 1.8
+  meleeRangeDetector: {fileID: 3868714877095072263}
+  debugAsFriend: 0
+  <Unit>k__BackingField:
+    attackCD: 1
+--- !u!114 &1731929145304686306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617663160012614107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10588795968541969e3d95ce74065eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   animator: {fileID: 4394249641494692053}
   rendererRef: {fileID: 4345810581287604715}
-  meleeRangeDetector: {fileID: 3868714877095072263}
-  animationSpeedMult: 10
+  unitVisual: {fileID: 2123314414111712344}
+  agent: {fileID: 8950036658210763843}
   blinkWaitTime: 0.5
-  attackCD: 1
-  debugAsFriend: 0
+  animationSpeedMult: 10
 --- !u!195 &8950036658210763843
 NavMeshAgent:
   m_ObjectHideFlags: 0

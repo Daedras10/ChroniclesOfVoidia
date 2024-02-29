@@ -8,26 +8,21 @@ namespace BattleEntity
 {
     public class UnitVisual : MovingBattleEntity
     {
-        private static readonly int Speedv = Animator.StringToHash("speedv");
-        
-        
         [Header("Components")]
-        [SerializeField] private Animator animator;
-        [SerializeField] private Renderer rendererRef;
-        [Space]
         [SerializeField] private MeleeRangeDetector meleeRangeDetector;
         
         [Header("Settings")]
-        [SerializeField] private float animationSpeedMult = 10f;
-        [SerializeField] private float blinkWaitTime = 0.5f;
-        [SerializeField] private float attackCD = 1f;
         [SerializeField] private bool debugAsFriend = false;
+        [field:SerializeField] public Unit Unit { get; private set; }
 
-        private Color originalColor;
+        
         private List<UnitVisual> unitsInRange = new ();
         
         
         private event Action TryAttack;
+        public Action<UnitVisual> OnUnitSelected;
+        public Action<UnitVisual> OnUnitDeselected;
+        public Action<UnitVisual> OnUnitTakeDamage;
         public static event Action<UnitVisual,UnitVisual> OnUnitEnterMeleeRange;
         public static event Action<UnitVisual,UnitVisual> OnUnitExitMeleeRange;
         
@@ -38,16 +33,14 @@ namespace BattleEntity
             meleeRangeDetector.OnMeleeRangeEnter += MeleeRangeEnter;
             meleeRangeDetector.OnMeleeRangeExit += MeleeRangeExit;
             TryAttack += Attack;
-            
-            originalColor = rendererRef.material.color;
         }
 
         private IEnumerator AttackCooldown()
-            {
-                TryAttack -= Attack;
-                yield return new WaitForSeconds(attackCD);
-                TryAttack += Attack;
-            }
+        {
+            TryAttack -= Attack;
+            yield return new WaitForSeconds(Unit.attackCD);
+            TryAttack += Attack;
+        }
 
         private void Attack()
         {
@@ -62,20 +55,13 @@ namespace BattleEntity
             if (!unitsInRange.Contains(unit)) return;
             
             Debug.Log($"{gameObject.name} : Attacking {unit.name}");
-            unit.BlinkDamage();
+            unit.TakeDamage();
         }
         
-        protected override void UpdateAction()
-        {
-            base.UpdateAction();
-            UpdateAnimationSpeed();
-        }
-        
-        private void UpdateAnimationSpeed()
-        {
-            var speed = agent.velocity.magnitude * animationSpeedMult;
-            animator.SetFloat(Speedv, speed);
-        }
+        // protected override void UpdateAction()
+        // {
+        //     base.UpdateAction();
+        // }
         
         protected override void UpdateDestination()
         {
@@ -100,20 +86,10 @@ namespace BattleEntity
             SetDestination(target.Position);
         }
 
-        [ContextMenu("Blink Damage")]
-        public void BlinkDamage()
+        [ContextMenu("TakeDamage")]
+        public void TakeDamage()
         {
-            StartCoroutine(BlinkCoroutine());
-            return;
-            
-            IEnumerator BlinkCoroutine()
-            {
-                var mat = rendererRef.material;
-                
-                mat.color = Color.red;
-                yield return new WaitForSeconds(blinkWaitTime);
-                mat.color = originalColor;
-            }
+            OnUnitTakeDamage?.Invoke(this);
         }
         
         private void MeleeRangeEnter(Collider col)
@@ -151,5 +127,10 @@ namespace BattleEntity
                 unitsInRange.Remove(unitVisual);
             }
         }
+    }
+
+    [Serializable] public class Unit
+    {
+        [SerializeField] public float attackCD = 1f;
     }
 }
