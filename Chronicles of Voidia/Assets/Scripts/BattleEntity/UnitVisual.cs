@@ -59,10 +59,43 @@ namespace BattleEntity
             unit.TakeDamage();
         }
         
-        // protected override void UpdateAction()
-        // {
-        //     base.UpdateAction();
-        // }
+        protected override void UpdateAction()
+        {
+            base.UpdateAction();
+            UpdateRotation();
+        }
+        
+        private void UpdateRotation()
+        {
+            if (!isMoving && unitsInRange.Count > 0)
+            {
+                var unit = unitsInRange.First();
+                var direction = unit.transform.position - transform.position;
+                var rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5f);
+                return;
+            }
+            
+            if (target == null) return;
+            if (target.IsPoint) return;
+            
+            // var targetIsAlly = debugAsFriend; //Todo : check if target is ally
+            //
+            // if (targetIsAlly)
+            // {
+            //     var direction = target.Position - transform.position;
+            //     var rotation = Quaternion.LookRotation(direction);
+            //     transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5f);
+            //     return;
+            // }
+
+            if (unitsInRange.Contains(target.Entity))
+            {
+                var direction = target.Position - transform.position;
+                var rotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5f);
+            }
+        }
         
         protected override void UpdateDestination()
         {

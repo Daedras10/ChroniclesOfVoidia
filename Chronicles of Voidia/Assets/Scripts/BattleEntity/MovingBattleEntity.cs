@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleMap;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace BattleEntity
 
         protected Target target;
         protected List<MovementCost> movementCosts = new ();
+        [SerializeField] protected bool isMoving;
+        
+        public Action<MovingBattleEntity> OnDestinationReached;
         
         protected override void Init()
         {
@@ -27,7 +31,22 @@ namespace BattleEntity
         protected override void UpdateAction()
         {
             UpdateDestination();
+            NavMeshAgentReachedDestination();
         }
+        
+        private void NavMeshAgentReachedDestination()
+        {
+            if (agent.pathPending) return;
+            if (agent.remainingDistance > agent.stoppingDistance) return;
+            if (!(!agent.hasPath || agent.velocity.sqrMagnitude == 0f)) return;
+            
+            if (!isMoving) return;
+            if (target is { IsPoint: false }) return;
+
+            isMoving = false;
+            Debug.LogWarning("Reached");
+            OnDestinationReached?.Invoke(this);
+        } 
         
         protected virtual void UpdateDestination()
         {
@@ -41,11 +60,12 @@ namespace BattleEntity
         public void SetTarget(Target tgt)
         {
             target = tgt;
-            agent.SetDestination(target.Position);
+            SetDestination(target.Position);
         }
         
         protected void SetDestination(Vector3 destination)
         {
+            isMoving = true;
             agent.SetDestination(destination);
         }
 
