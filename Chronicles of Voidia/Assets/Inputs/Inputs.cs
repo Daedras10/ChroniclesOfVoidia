@@ -107,6 +107,33 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""879e74ac-9c34-47f9-960b-e300a92483fc"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RotateCam"",
+                    ""type"": ""Value"",
+                    ""id"": ""45cfedd7-6b90-4fc1-a9a0-03f0c6e5a73c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ZoomCam"",
+                    ""type"": ""Value"",
+                    ""id"": ""5b9cb6d0-c865-45d9-a1cc-002cc8b5067f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -212,7 +239,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""004c2764-7886-4e3a-a69b-5389701c61ab"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -228,6 +255,83 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LAlt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""85bc395c-b94d-432b-ab98-f642f4648ee7"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""019a53f4-f8c3-4158-86d3-5fcdd338da45"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b6285820-3de5-4362-8a16-ae0a0438a225"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""55f8a408-9fdf-4d1e-a10d-b7bb75df9fd6"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ce76596f-c792-4ea3-b60d-18a6c8f4b46e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e977f946-b2ed-439d-8857-a1ad946fc444"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4508f08d-a04f-4636-88b6-e749dd6c0804"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomCam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -247,6 +351,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Battle_Tab = m_Battle.FindAction("Tab", throwIfNotFound: true);
         m_Battle_A = m_Battle.FindAction("A", throwIfNotFound: true);
         m_Battle_LAlt = m_Battle.FindAction("LAlt", throwIfNotFound: true);
+        m_Battle_Movement = m_Battle.FindAction("Movement", throwIfNotFound: true);
+        m_Battle_RotateCam = m_Battle.FindAction("RotateCam", throwIfNotFound: true);
+        m_Battle_ZoomCam = m_Battle.FindAction("ZoomCam", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +424,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Battle_Tab;
     private readonly InputAction m_Battle_A;
     private readonly InputAction m_Battle_LAlt;
+    private readonly InputAction m_Battle_Movement;
+    private readonly InputAction m_Battle_RotateCam;
+    private readonly InputAction m_Battle_ZoomCam;
     public struct BattleActions
     {
         private @Inputs m_Wrapper;
@@ -330,6 +440,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Tab => m_Wrapper.m_Battle_Tab;
         public InputAction @A => m_Wrapper.m_Battle_A;
         public InputAction @LAlt => m_Wrapper.m_Battle_LAlt;
+        public InputAction @Movement => m_Wrapper.m_Battle_Movement;
+        public InputAction @RotateCam => m_Wrapper.m_Battle_RotateCam;
+        public InputAction @ZoomCam => m_Wrapper.m_Battle_ZoomCam;
         public InputActionMap Get() { return m_Wrapper.m_Battle; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -366,6 +479,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @LAlt.started += instance.OnLAlt;
             @LAlt.performed += instance.OnLAlt;
             @LAlt.canceled += instance.OnLAlt;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @RotateCam.started += instance.OnRotateCam;
+            @RotateCam.performed += instance.OnRotateCam;
+            @RotateCam.canceled += instance.OnRotateCam;
+            @ZoomCam.started += instance.OnZoomCam;
+            @ZoomCam.performed += instance.OnZoomCam;
+            @ZoomCam.canceled += instance.OnZoomCam;
         }
 
         private void UnregisterCallbacks(IBattleActions instance)
@@ -397,6 +519,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @LAlt.started -= instance.OnLAlt;
             @LAlt.performed -= instance.OnLAlt;
             @LAlt.canceled -= instance.OnLAlt;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @RotateCam.started -= instance.OnRotateCam;
+            @RotateCam.performed -= instance.OnRotateCam;
+            @RotateCam.canceled -= instance.OnRotateCam;
+            @ZoomCam.started -= instance.OnZoomCam;
+            @ZoomCam.performed -= instance.OnZoomCam;
+            @ZoomCam.canceled -= instance.OnZoomCam;
         }
 
         public void RemoveCallbacks(IBattleActions instance)
@@ -425,5 +556,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnTab(InputAction.CallbackContext context);
         void OnA(InputAction.CallbackContext context);
         void OnLAlt(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnRotateCam(InputAction.CallbackContext context);
+        void OnZoomCam(InputAction.CallbackContext context);
     }
 }

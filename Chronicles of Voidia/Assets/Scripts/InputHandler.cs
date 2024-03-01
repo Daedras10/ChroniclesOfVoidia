@@ -20,6 +20,11 @@ public class InputHandler : MonoBehaviour
     public static event Action OnTabStarted;
     public static event Action OnTabEnded;
     public static event Action OnTabPerformed;
+    public static event Action<Vector2> OnKeyboardMovementStarted;
+    public static event Action<Vector2> OnKeyboardMovementTriggered;
+    public static event Action<Vector2> OnKeyboardMovementEnded;
+    public static event Action<Vector2> OnScoll;
+    public static event Action<Vector2> OnMouseDrag;
     
     
     
@@ -27,6 +32,7 @@ public class InputHandler : MonoBehaviour
     
     private bool primaryClickStarted = false;
     private bool secondaryClickStarted = false;
+    private bool keyboardMovementStarted = false;
 
     private void Awake()
     {
@@ -55,6 +61,11 @@ public class InputHandler : MonoBehaviour
         inputs.Battle.Tab.started += TabStarted;
         inputs.Battle.Tab.canceled += TabEnded;
         inputs.Battle.Tab.performed += TabPerformed;
+
+        inputs.Battle.Movement.started += MovementStart;
+        inputs.Battle.Movement.canceled += MovementEnd;
+        inputs.Battle.MouseWheel.performed += Scroll;
+        //inputs.Battle.Mouse.performed += MouseDrag;
         
         inputs.Enable();
         
@@ -65,6 +76,7 @@ public class InputHandler : MonoBehaviour
     {
         if (primaryClickStarted) OnPrimaryClickTiggered?.Invoke(MousePosition);
         if (secondaryClickStarted) OnSecondaryClickTiggered?.Invoke(MousePosition);
+        if (keyboardMovementStarted) OnKeyboardMovementTriggered?.Invoke(inputs.Battle.Movement.ReadValue<Vector2>());
     }
     
     private void RefreshMousePosition(InputAction.CallbackContext ctx)
@@ -145,6 +157,23 @@ public class InputHandler : MonoBehaviour
     private void TabPerformed(InputAction.CallbackContext ctx)
     {
         OnTabPerformed?.Invoke();
+    }
+    
+    private void MovementStart(InputAction.CallbackContext ctx)
+    {
+        OnKeyboardMovementStarted?.Invoke(ctx.ReadValue<Vector2>());
+        keyboardMovementStarted = true;
+    }
+    
+    private void MovementEnd(InputAction.CallbackContext ctx)
+    {
+        OnKeyboardMovementEnded?.Invoke(ctx.ReadValue<Vector2>());
+        keyboardMovementStarted = false;
+    }
+    
+    private void Scroll(InputAction.CallbackContext ctx)
+    {
+        OnScoll?.Invoke(ctx.ReadValue<Vector2>());
     }
     
 
